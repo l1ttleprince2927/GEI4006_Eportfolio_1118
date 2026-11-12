@@ -1,0 +1,525 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>My Art of Living</title>
+<link rel="stylesheet" href="fonts.css">
+<style>
+/* Layout: one trail scrolled top to bottom. A narrow reading column for the text, photos break wider, and the sky behind the page turns from morning mist to sunset as the reader walks down. */
+:root {
+  --mist: #e6ebec;
+  --dusk: #f4d9c6;
+  --surface: #f8f9f8;
+  --ink: #1d2428;
+  --ink-soft: #4d5860;
+  --rule: #c5ced2;
+  --ember: #b8501c;
+  --trail: #3c6a60;
+  --on-photo: #ffffff;
+  --scrim: rgba(12, 16, 20, 0.62);
+  --font-display: "Big Shoulders Display", "Arial Narrow", "Helvetica Neue", Arial, sans-serif;
+  --font-body: "Newsreader", Georgia, "Times New Roman", serif;
+  --font-mono: "IBM Plex Mono", ui-monospace, "SFMono-Regular", Menlo, Consolas, monospace;
+  --p: 0;
+  --measure: 66ch;
+  --wide: 1120px;
+}
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme="light"]) {
+    --mist: #11181d;
+    --dusk: #2a170f;
+    --surface: #182128;
+    --ink: #ebe6de;
+    --ink-soft: #a9b3b9;
+    --rule: #33414b;
+    --ember: #f0884a;
+    --trail: #82b6a8;
+    --scrim: rgba(6, 8, 10, 0.66);
+    color-scheme: dark;
+  }
+}
+:root[data-theme="dark"] {
+  --mist: #11181d;
+  --dusk: #2a170f;
+  --surface: #182128;
+  --ink: #ebe6de;
+  --ink-soft: #a9b3b9;
+  --rule: #33414b;
+  --ember: #f0884a;
+  --trail: #82b6a8;
+  --scrim: rgba(6, 8, 10, 0.66);
+  color-scheme: dark;
+}
+
+body {
+  margin: 0;
+  background: var(--mist);
+  background: color-mix(in oklab, var(--dusk) calc(var(--p) * 100%), var(--mist));
+  color: var(--ink);
+  font-family: var(--font-body);
+  font-size: 1.125rem;
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+}
+@media (prefers-reduced-motion: reduce) {
+  body { background: linear-gradient(180deg, var(--mist), var(--dusk)); }
+}
+
+.wrap {
+  padding-left: max(16px, env(safe-area-inset-left, 0px));
+  padding-right: max(16px, env(safe-area-inset-right, 0px));
+}
+.col { max-width: var(--measure); margin-inline: auto; }
+.wide { max-width: var(--wide); margin-inline: auto; }
+/* auto margins make grid items shrink-to-fit; keep them full width */
+.col, .wide { width: 100%; }
+
+h1, h2, h3 {
+  font-family: var(--font-display);
+  font-weight: 800;
+  line-height: 1.02;
+  letter-spacing: 0.005em;
+  text-wrap: balance;
+  margin: 0;
+}
+h2 { font-size: clamp(2.2rem, 5vw, 3.4rem); text-transform: uppercase; }
+h3 { font-size: 1.55rem; font-weight: 600; text-transform: uppercase; letter-spacing: 0.02em; }
+p { margin: 0; }
+a { color: var(--trail); text-underline-offset: 3px; }
+a:focus-visible, .stages a:focus-visible { outline: 2px solid var(--ember); outline-offset: 3px; border-radius: 2px; }
+em { font-style: italic; }
+
+/* Trail marker: the stage label above each section */
+.marker {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--trail);
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+.marker::before {
+  content: "";
+  width: 10px; height: 10px;
+  border-radius: 50%;
+  border: 2px solid var(--trail);
+  flex: none;
+}
+
+/* Hero */
+.hero { position: relative; overflow: hidden; background: #0d1114; }
+.hero img {
+  display: block; width: 100%;
+  height: clamp(420px, 70vh, 760px);
+  object-fit: cover;
+  animation: drift 14s ease-out both;
+}
+@keyframes drift { from { transform: scale(1.06); } to { transform: scale(1); } }
+.hero .title {
+  position: absolute; inset: auto 0 0 0;
+  padding-block: 120px 40px;
+  background: linear-gradient(180deg, transparent, var(--scrim) 45%);
+  color: var(--on-photo);
+}
+.hero .title > div { display: grid; gap: 14px; }
+.hero .course {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  opacity: 0.9;
+}
+.hero h1 { font-size: clamp(2.8rem, 9vw, 6.2rem); text-transform: uppercase; }
+.hero .thesis { font-size: clamp(1.1rem, 2.4vw, 1.4rem); max-width: 38ch; }
+.who { display: flex; flex-wrap: wrap; row-gap: 4px; margin: 4px 0 0; font-family: var(--font-mono); font-size: 0.78rem; letter-spacing: 0.04em; opacity: 0.92; }
+.who span + span::before { content: "·"; margin: 0 10px; }
+@media (max-width: 600px) { .who { flex-direction: column; } .who span + span::before { content: none; } }
+
+/* Sections */
+section { padding-block: clamp(56px, 9vw, 104px); }
+section + section { border-top: 1px solid var(--rule); }
+.stack { display: grid; gap: 22px; }
+.stack-lg { display: grid; gap: 40px; }
+.stack, .stack-lg { grid-template-columns: minmax(0, 1fr); }
+.lead { font-size: 1.3rem; line-height: 1.5; }
+.kicker { font-weight: 500; }
+
+/* Key theme pull line */
+.theme-line {
+  font-family: var(--font-display);
+  font-weight: 600;
+  font-size: clamp(1.6rem, 3.6vw, 2.3rem);
+  line-height: 1.12;
+  text-transform: uppercase;
+  color: var(--ember);
+  text-wrap: balance;
+  padding-block: 8px;
+}
+
+/* Art of living: three trail signposts */
+.parts { list-style: none; margin: 0; padding: 0; display: grid; gap: 14px; counter-reset: part; }
+.parts li {
+  counter-increment: part;
+  display: grid;
+  grid-template-columns: 44px 1fr;
+  gap: 16px;
+  align-items: start;
+  padding: 18px 20px;
+  background: var(--surface);
+  border-radius: 6px;
+}
+.parts li::before {
+  content: counter(part);
+  font-family: var(--font-display);
+  font-weight: 800;
+  font-size: 2rem;
+  line-height: 1;
+  color: var(--ember);
+}
+.parts li > div { min-width: 0; }
+.parts strong { font-weight: 500; display: block; }
+
+/* Three answers */
+.answers { display: grid; gap: 18px; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); }
+.answer { display: grid; gap: 12px; align-content: start; min-width: 0; padding-top: 16px; border-top: 3px solid var(--trail); }
+.answer p { font-size: 1.05rem; }
+.answer .src { font-family: var(--font-mono); font-size: 0.74rem; color: var(--ink-soft); letter-spacing: 0.02em; }
+
+/* Photos */
+figure { margin: 0; }
+.photo img { display: block; width: 100%; height: auto; border-radius: 4px; }
+figcaption {
+  font-family: var(--font-mono);
+  font-size: 0.74rem;
+  line-height: 1.5;
+  color: var(--ink-soft);
+  margin-top: 8px;
+}
+.masonry { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px 14px; align-items: start; }
+.shot { max-width: 300px; }
+.row { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(240px, 1fr)); align-items: start; }
+/* two portrait photos side by side; capped so they don't grow too tall */
+.pair { max-width: 820px; }
+.row-2 { display: grid; gap: 14px; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); align-items: start; }
+
+/* Empty frame for the phone-free walk */
+.frame {
+  border: 2px dashed var(--rule);
+  border-radius: 6px;
+  display: grid;
+  place-content: center;
+  text-align: center;
+  gap: 8px;
+  padding: 28px 20px;
+  min-height: 200px;
+}
+.frame .big { font-family: var(--font-display); font-weight: 600; font-size: 1.5rem; text-transform: uppercase; }
+.frame .small { font-family: var(--font-mono); font-size: 0.76rem; color: var(--ink-soft); }
+
+.subhead {
+  display: flex; flex-wrap: wrap; gap: 6px 14px; align-items: baseline;
+  border-bottom: 1px solid var(--rule); padding-bottom: 8px;
+}
+.subhead .when { font-family: var(--font-mono); font-size: 0.78rem; color: var(--ink-soft); letter-spacing: 0.04em; }
+
+.label { font-weight: 500; color: var(--trail); }
+
+/* Strategies */
+.strategies { margin: 0; padding-left: 1.3em; display: grid; gap: 10px; }
+.strategies li::marker { color: var(--ember); font-weight: 600; }
+
+/* References */
+.refs { display: grid; gap: 12px; font-size: 0.95rem; line-height: 1.5; }
+.refs p { padding-left: 2em; text-indent: -2em; overflow-wrap: anywhere; }
+
+footer { padding-block: 40px 56px; border-top: 1px solid var(--rule); }
+footer p { font-family: var(--font-mono); font-size: 0.74rem; color: var(--ink-soft); }
+
+/* Stage list on wide screens */
+.stages {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: max(20px, env(safe-area-inset-left, 0px));
+  transform: translateY(-50%);
+  list-style: none; margin: 0; padding: 0;
+  z-index: 5;
+}
+.stages a {
+  display: flex; align-items: center; gap: 10px;
+  padding: 5px 0;
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--ink-soft);
+  text-decoration: none;
+}
+.stages a::before {
+  content: ""; width: 8px; height: 8px; border-radius: 50%;
+  border: 2px solid currentColor; flex: none;
+}
+.stages a.on { color: var(--ember); }
+.stages a.on::before { background: currentColor; }
+/* Leave room beside wide sections for the stage list; show it only once past the hero photo */
+@media (min-width: 1280px) {
+  :root { --wide: min(1120px, calc(100vw - 360px)); }
+  .stages { display: block; opacity: 0; visibility: hidden; transition: opacity 300ms, visibility 300ms; }
+  .past-hero .stages { opacity: 1; visibility: visible; }
+}
+
+/* Gentle settle as photos come into view; they stay visible at rest */
+.reveal { transition: transform 900ms cubic-bezier(.2,.7,.2,1); transform: translateY(10px); }
+.reveal.in { transform: none; }
+@media (prefers-reduced-motion: reduce) {
+  .hero img { animation: none; }
+  .reveal { transition: none; transform: none; }
+}
+</style>
+</head>
+<body>
+<header class="hero">
+  <img src="img/exp2-6.jpg" alt="Sunset above a sea of cloud on Lantau, the sky orange and gold over the hills" fetchpriority="high">
+  <div class="title wrap">
+    <div class="wide">
+      <p class="course">GEI4006 In Search of the Art of Living in the Digital Age · E-portfolio</p>
+      <h1>A Way In, Not a Replacement</h1>
+      <p class="thesis">My art of living in the digital age, tested on two hikes in Hong Kong.</p>
+      <!-- YOUR DETAILS: replace each [ ... ] below, keeping the <span> tags -->
+      <p class="who"><span>Zihao Huang</span><span>SID 11533765</span><span>BEd(S)-ICT</span><span>Year 3</span><span>s1153376@s.eduhk.hk</span></p>
+    </div>
+  </div>
+</header>
+
+<nav aria-label="Stages">
+  <ul class="stages">
+    <li><a href="#question">The question</a></li>
+    <li><a href="#art-of-living">Key theme</a></li>
+    <li><a href="#answers">Why people hike</a></li>
+    <li><a href="#dragons-back">Dragon's Back</a></li>
+    <li><a href="#lantau">Lantau</a></li>
+    <li><a href="#my-answer">My answer</a></li>
+    <li><a href="#references">References</a></li>
+  </ul>
+</nav>
+
+<main>
+  <section id="question" class="wrap">
+    <div class="col stack">
+      <p class="marker">Stage 1 · The question</p>
+      <h2>Why hike, now?</h2>
+      <p class="lead">When I hiked Lantau Trail Section 2 on 1 November 2026, the trail was packed, and almost everyone, including me, was looking for the same photo among the silver grass. It left me with a question: why has hiking become so popular in an age when so much of our free time goes to screens?</p>
+      <p>The popularity is real, but it is not simple. In the United States, outdoor participation reached a record 181.1 million people in 2024, and hiking was the most popular outdoor-specific activity, with about 63 million participants (Outdoor Industry Association, 2025). Hong Kong looks different. Visits to country parks fell by 16% between 2011 and 2019, then rebounded to 12.4 million in 2021, when hiking took off during COVID-19 (LegCo Research Office, 2022). The digital age alone cannot explain the trend, but the question led me to a bigger one, which this portfolio sets out to answer:</p>
+      <p class="theme-line">How do I want to live with technology in the digital age?</p>
+      <p>Hiking is a good place to look, because that is where the pull is sharpest: the same phone that leads me to a trail can also pull me out of the experience once I arrive.</p>
+    </div>
+  </section>
+
+  <section id="art-of-living" class="wrap">
+    <div class="col stack">
+      <p class="marker">Stage 2 · The key theme</p>
+      <h2>My art of living, in three parts</h2>
+      <p class="lead">My art of living in the digital age, and the key theme of this portfolio, is to use technology as a way into real experiences, not a replacement for them. In practice, it has three parts:</p>
+      <ol class="parts">
+        <li><div><strong>Let technology lead me there.</strong> Apps and platforms open doors I would not find alone: a route someone else uploaded, a group of strangers heading the same way, or photos that show when a place is at its best.</div></li>
+        <li><div><strong>Live it instead of staging it.</strong> Once I arrive, the screen should step back, so the experience is something I live rather than something I perform for an audience.</div></li>
+        <li><div><strong>Share with respect.</strong> When I share afterwards, I should think about the place and the people who come after me.</div></li>
+      </ol>
+      <p>My two experiences test each part. On Dragon's Back, I compared a walk that technology led and shaped from start to finish with a walk where my phone stayed in my bag. On Lantau, an app found my companions and an album cover chose the destination, and I saw what a crowd chasing one image does to a hillside.</p>
+    </div>
+  </section>
+
+  <section id="answers" class="wrap">
+    <div class="wide stack-lg">
+      <div class="col stack" style="margin-inline:0;">
+        <p class="marker">Stage 3 · Why people hike now</p>
+        <h2>Three possible answers</h2>
+        <p>Research on digital detox, self-presentation on social media and online communities suggests three possible answers. None of these studies looks at hiking directly, so applying them to hiking is my own reading.</p>
+      </div>
+      <div class="answers">
+        <div class="answer">
+          <h3>Escape</h3>
+          <p>People hike to get away from screens. Digital detox, a deliberate break from devices, is widely promoted as a way to feel better, although a systematic review found mixed results for well-being (Radtke et al., 2022). Syvertsen and Enli (2020) add that detox is often sold as a way back to an "authentic" self, a promise they view critically. To judge whether a hike actually improves my life, I borrow a lens from the OECD's (2015) well-being framework. It separates people's material conditions, such as income and housing, from their quality of life, which includes work-life balance, environmental quality and subjective well-being.</p>
+          <p class="src">Radtke et al., 2022 · Syvertsen &amp; Enli, 2020 · OECD, 2015</p>
+        </div>
+        <div class="answer">
+          <h3>Technology sends us there</h3>
+          <p>Social media gives users near-limitless opportunities to manage the image they present (Hollenbaugh, 2021), and nature is a popular backdrop. Studying how people share the outdoors on Instagram, Arts et al. (2021) found that users tend to capture and post scenes they see as "Instagrammable", which produces the same images of the same places again and again. Route apps may work in a similar way, by making a trail easy to find and follow.</p>
+          <p class="src">Hollenbaugh, 2021 · Arts et al., 2021</p>
+        </div>
+        <div class="answer">
+          <h3>Community</h3>
+          <p>Technology brings people together offline. Torres (2020) spent two years with a leisure group organised on Meetup and found that technology acts as a catalyst for forming groups around shared interests.</p>
+          <p class="src">Torres, 2020</p>
+        </div>
+      </div>
+      <p class="col" style="margin-inline:0;">These answers can all be true at once. Each is also a view of how technology relates to real experience: something we escape, something that sends us out and shapes what we do there, or something that brings us together. My two experiences show how the three mix in one person's life, and what that means for how I want to live.</p>
+    </div>
+  </section>
+
+  <section id="dragons-back" class="wrap">
+    <div class="stack-lg">
+      <div class="col stack">
+        <p class="marker">Stage 4 · Experience 1</p>
+        <h2>Dragon's Back, twice</h2>
+        <p class="lead">I have walked from Dragon's Back to Cape D'Aguilar twice, and the two walks could hardly have differed more in how I used my phone.</p>
+        <div class="subhead"><h3>Walk 1</h3><span class="when">12 September 2026 · technology led the way</span></div>
+        <p>On the first walk, on 12 September 2026, technology did almost everything. I followed a route other hikers had uploaded to Liangbulu, a route-sharing app, so I never had to think about the way. At each well-known viewpoint I took photos, and afterwards I posted the classic set on Instagram: the beach seen from the trail, the sign at the top, and the natural scenery at Cape D'Aguilar. The post received likes but no comments, and I found myself caring about who had liked and viewed it.</p>
+        <figure class="photo shot reveal"><img src="img/exp1-liangbulu.jpg" alt="Screenshot of the Liangbulu app: a red hiking route from Shek O Country Park along the coast to Cape D'Aguilar, marked as an 11 km hike, with like and download counts" loading="lazy" width="720" height="1310"><figcaption>Screenshot · The route I followed on Liangbulu (两步路) on my first walk: an 11 km track recorded and uploaded by another hiker, downloaded 2,425 times when I took this screenshot. Username hidden.</figcaption></figure>
+      </div>
+
+      <div class="wide">
+        <div class="masonry">
+          <figure class="photo reveal"><img src="img/exp1-1.jpg" alt="Wooden Hong Kong Trail sign reading Dragon's Back, 1 km, 1 hour" loading="lazy" width="1200" height="1600"><figcaption>Walk 1 · The Dragon's Back trail sign</figcaption></figure>
+          <figure class="photo reveal"><img src="img/exp1-2.jpg" alt="Me on the ridge looking out over the coast and small islands" loading="lazy" width="1440" height="1080"><figcaption>Walk 1 · On the ridge, looking out to the coast</figcaption></figure>
+          <figure class="photo reveal"><img src="img/exp1-3.jpg" alt="View from the trail over a bay and a built-up peninsula" loading="lazy" width="1440" height="1080"><figcaption>Walk 1 · The view the trail is known for</figcaption></figure>
+          <figure class="photo reveal"><img src="img/exp1-4.jpg" alt="Road sign pointing to Cape D'Aguilar beside a curving road" loading="lazy" width="1600" height="1200"><figcaption>Walk 1 · The road to Cape D'Aguilar</figcaption></figure>
+          <figure class="photo reveal"><img src="img/exp1-5.jpg" alt="White stone lighthouse with an arched doorway" loading="lazy" width="1200" height="1600"><figcaption>Walk 1 · The lighthouse at Cape D'Aguilar</figcaption></figure>
+          <figure class="photo reveal"><img src="img/exp1-6.jpg" alt="Narrow sea cave opening onto bright water" loading="lazy" width="1200" height="1600"><figcaption>Walk 1 · A sea cave on the cape</figcaption></figure>
+          <figure class="photo reveal"><img src="img/exp1-7.jpg" alt="Whale skeleton on display beside the rocky shore" loading="lazy" width="1440" height="1080"><figcaption>Walk 1 · The whale skeleton on the cape</figcaption></figure>
+          <figure class="photo reveal"><img src="img/exp1-8.jpg" alt="Concrete path winding down to a rocky bay" loading="lazy" width="1440" height="1080"><figcaption>Walk 1 · The path down to the shore</figcaption></figure>
+          <figure class="photo reveal"><img src="img/exp1-9.jpg" alt="Me standing at a cave mouth as waves break on the rocks" loading="lazy" width="1600" height="1258"><figcaption>Walk 1 · At the cave mouth, waves breaking</figcaption></figure>
+        </div>
+      </div>
+
+      <div class="col stack">
+        <div class="subhead"><h3>Walk 2</h3><span class="when">Early October · phone in my backpack</span></div>
+        <p>In early October I walked the same route again, alone, and this time my phone stayed in my backpack. I found the way using the trail signs and what I remembered from the first walk. I took no photos, posted nothing, and left my messages until I was on my way to supper. More than once I wanted to stop and photograph the views again, but I remembered why I was there. I also shouted far more than on the first walk, a long "ahhh" at the viewpoints and on the uphill sections, letting go of the pressure that builds up over my weekdays of lessons and coursework. Shouting is part of who I am, and I think I did it more because my phone was no longer filling those moments. I felt more alive than on the first walk, as if my brain had been fully recharged.</p>
+        <div class="frame"><p class="big">No photos</p><p class="small">There are no photos from my second walk. That gap is part of the evidence.</p></div>
+        <p><span class="label">What it shows.</span> Together, the two walks show both sides of technology's role in hiking: on the first, technology sent me to the trail; on the second, I went there to escape it. The first walk fits the second answer: technology drives hiking. Liangbulu made the route easy to follow, and Instagram turned the walk into familiar images, the kind of repeated "Instagrammable" scenes Arts et al. (2021) describe. Caring about the likes showed that part of the walk was being performed for an audience (Hollenbaugh, 2021).</p>
+        <p>The second walk fits the first answer: escape. My material conditions were the same on both walks, but my quality of life, in the OECD's (2015) terms, was not: I felt better, and the pressure of my weekdays eased, which touches subjective well-being and work-life balance. The phone was not the only difference, though. By the second walk I already knew the route, which may also have helped me relax. Nor was the escape clean. I could find my way without the app only because the app had shown me the route the first time. I did feel more like myself on the second walk, but that feeling rested on what the app had taught me, which is why I share Syvertsen and Enli's (2020) doubt that a detox simply returns us to some authentic self.</p>
+        <p><span class="label">What it taught me about my art of living.</span> This experience showed me the first two parts in order. Liangbulu led me to Dragon's Back, which is part 1 working as it should. But on that first walk the screen never stepped back, so I staged the walk for Instagram instead of living it. The second walk showed me what part 2 feels like: the same trail, lived instead of performed.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="lantau" class="wrap">
+    <div class="stack-lg">
+      <div class="col stack">
+        <p class="marker">Stage 5 · Experience 2</p>
+        <h2>Lantau with strangers</h2>
+        <p class="lead">For my second experience, I tried something new for me: hiking with strangers I found online. On Xiaohongshu, I found a post from a group looking for more people to walk Lantau Trail Section 2, from Nam Shan Campsite to Pak Kung Au, and I joined them on Sunday 1 November 2026.</p>
+        <p>We chose the route for two reasons. It was the season when the golden silver grass is in full bloom, and the stone houses on the climb appear on the cover of Eason Chan's album <em>TASTE the ATMOSPHERE</em>. All of us wanted pictures there, and so did many others: the trail was packed.</p>
+      </div>
+
+      <div class="wide row pair">
+        <figure class="photo reveal"><img src="img/exp2-1.jpg" alt="Me on the ridge with arms spread, sea and city far below" loading="lazy" width="1200" height="1600"><figcaption>Early on the ridge, clear skies</figcaption></figure>
+        <figure class="photo reveal"><img src="img/exp2-2.jpg" alt="Me among tall silver grass with a peak behind" loading="lazy" width="1045" height="1600"><figcaption>Silver grass in full bloom</figcaption></figure>
+      </div>
+
+      <div class="wide">
+        <figure class="photo reveal"><img src="img/exp2-3.jpg" alt="Me standing in the silver grass below the stone houses on the ridge" loading="lazy" width="1440" height="1080"><figcaption>The album spot: the stone houses on the ridge. I stepped off the path into the grass for this photo.</figcaption></figure>
+      </div>
+
+      <div class="col stack">
+        <p>The walk did not go the way the photos promised. On the way up Yi Tung Shan, thick fog closed in, the air turned cool, and we could see almost nothing. Later the views opened up, and at sunset, one of the goals of our hike, the sky filled with fiery, colourful clouds. I still find it hard to describe, but it made the day worth it, and all of us were exhilarated. Along the way, we talked to each other face to face rather than through our phones. No one climbed onto the stone houses, but many people, me included, stepped into the silver grass to find a better spot for photos.</p>
+      </div>
+
+      <div class="wide">
+        <figure class="photo reveal"><img src="img/exp2-4.jpg" alt="Two hikers from our group walking towards a peak as mist rolls over it" loading="lazy" width="1440" height="1080"><figcaption>Mist rolling over the hills as we climbed</figcaption></figure>
+      </div>
+      <div class="wide">
+        <figure class="photo reveal"><img src="img/exp2-5.jpg" alt="Sunset glowing above a sea of cloud, grass in the foreground" loading="lazy" width="1440" height="1080"><figcaption>Above the cloud at sunset: the part of the day no photo had promised</figcaption></figure>
+      </div>
+
+      <div class="col stack">
+        <p><span class="label">What it shows.</span> This hike combined the second and third answers. Xiaohongshu formed our group, which matches Torres's (2020) finding that technology acts as a catalyst for groups built around a shared interest. An image also chose the destination. In November 2025, the South China Morning Post reported that hundreds of mainland Chinese tourists flocked to the area, nicknamed "Mount Eason", drawn by the silver grass and the album cover (Lo, 2025). The Standard attributed the influx to a trend on Xiaohongshu that encouraged users to recreate the scene on the cover (Cui, 2025), and Now News reported visitors picking the grass as photo props, stepping into it despite "do not trample" signs, and climbing onto the roofs of the stone cabins (Now News, 2025). This is the global side of my question. A singer's album and a mainland Chinese platform drew crowds across a border to a Hong Kong hillside to reproduce the same picture, the kind of repetition Arts et al. (2021) found on Instagram. The same platform brought me there too.</p>
+        <p>Yet the part of the day I remember best was the part no photo had promised. The fog and the sunset could not be planned or reproduced, and the conversations happened because our phones were away. In quality-of-life terms, the day lifted my subjective well-being through other people's company. It also touched environmental quality, a dimension of quality of life that belongs to everyone (OECD, 2015): each person who steps into the grass for a better angle, including me, tramples a little of what drew us there.</p>
+        <p><span class="label">What it taught me about my art of living.</span> Lantau tested all three parts. Part 1 worked: an app led me to a trail and to people I would never otherwise have met. Part 2 worked once the fog rolled in and the conversations started. Part 3 is where I fell short. I stepped into the grass for a photo like everyone else, a small version of what the news reports described. Sharing with respect starts before a photo is posted, with where I choose to stand when I take it.</p>
+      </div>
+    </div>
+  </section>
+
+  <section id="my-answer" class="wrap">
+    <div class="col stack">
+      <p class="marker">Stage 6 · My answer</p>
+      <h2>Led there, present, careful</h2>
+      <p class="lead">So why has hiking become popular in the digital age? My experiences suggest that the three answers are not rivals: technology both sends us to the trails and is what we go there to escape, and online groups turn strangers into companions offline.</p>
+      <p>In Hong Kong, COVID-19 added a push that had nothing to do with screens. Technology does not simply pull people away from nature or push them towards it. It does both, often on the same day.</p>
+      <p><span class="label">Beyond the trail.</span> Hiking, though, was only where I looked. Off the trail, technology leads me into real experiences too. Through SocialCareer, an online volunteering platform, I have applied for voluntary work, taken part in volunteering events, and made new friends. As with the Xiaohongshu group on Lantau, the platform opened the door, but the work and the friendships happened offline, much like the catalyst role Torres (2020) describes.</p>
+      <p>That is why my art of living is to use technology as a way into real experiences, not a replacement for them. The first part, letting technology lead me there, is the easiest, because apps and platforms are designed to do exactly that, whether the door opens onto a trail, a hiking group or a volunteering event. The second part, living the experience instead of staging it, takes a conscious choice, such as leaving my phone in my bag or talking to the person beside me. My two best moments, the shouting on Dragon's Back and the sunset on Lantau, both happened with my phone put away. What I am really after is how those moments felt: more alive and recharged on Dragon's Back, and connected to people I had only just met on Lantau. Technology earns its place in my life when it leads me to moments like these, and it should step aside when it gets between me and them.</p>
+      <p>The third part, sharing with respect, is the one I am still learning, and it is where my choices as a citizen meet the global picture. When many people share the same images, the result is crowded trails, trampled grass, and visitors crossing a border to repeat one photo. Sharing is not only a problem, though. The same platform that crowded the hillside also found me a group, and Arts et al. (2021) found that some users push back against repetitive images by posting unpolished pictures. One hiker cannot change that pattern alone, but the outdoor ethics organisation Leave No Trace offers a starting point: its 2018 social media guidelines ask hikers to tag photos thoughtfully and to consider the story an image tells (Washington Trails Association, 2018).</p>
+      <p>Hiking is where I will test part 3 first, so I am setting myself three strategies for my next hike, each drawn from what this portfolio taught me:</p>
+      <ol class="strategies">
+        <li>Stay on the path even when a better angle is one step into the grass, because I saw on Lantau how many single steps add up.</li>
+        <li>Think twice before tagging the exact location of a fragile spot, as Leave No Trace advises.</li>
+        <li>Post the moments no one else has, such as the fog, instead of only the classic shot: the quiet pushback against repeated images that Arts et al. (2021) describe.</li>
+      </ol>
+      <p>I set out to understand why hiking is popular in the digital age. I end with a clearer idea of how I want to live in it:</p>
+      <p class="theme-line">Led there by technology, present once I arrive, and careful about what I leave behind, on the hillside and online.</p>
+    </div>
+  </section>
+
+  <section id="references" class="wrap">
+    <div class="col stack">
+      <p class="marker">References</p>
+      <div class="refs">
+        <p>Arts, I., Fischer, A., Duckett, D., &amp; van der Wal, R. (2021). The Instagrammable outdoors – Investigating the sharing of nature experiences through visual social media. <em>People and Nature, 3</em>(6), 1244–1256. <a href="https://doi.org/10.1002/pan3.10239">https://doi.org/10.1002/pan3.10239</a></p>
+        <p>Cui, J. (2025, November 16). Xiaohongshu trend sparks tourist influx at Sunset Peak, coinciding with trail running race. <em>The Standard</em>. <a href="https://www.thestandard.com.hk/news/article/316965/Xiaohongshu-trend-sparks-tourist-influx-at-Sunset-Peak-coinciding-with-trail-running-race">https://www.thestandard.com.hk/news/article/316965/Xiaohongshu-trend-sparks-tourist-influx-at-Sunset-Peak-coinciding-with-trail-running-race</a></p>
+        <p>Hollenbaugh, E. E. (2021). Self-presentation in social media: Review and research opportunities. <em>Review of Communication Research, 9</em>, 80–98. <a href="https://doi.org/10.12840/issn.2255-4165.027">https://doi.org/10.12840/issn.2255-4165.027</a></p>
+        <p>LegCo Research Office. (2022). <em>Conservation of country parks in Hong Kong</em> (ISSH26/2022). Legislative Council Secretariat. <a href="https://www.legco.gov.hk/research-publications/english/2022issh26-conservation-of-country-parks-in-hong-kong-20221025-e.pdf">https://www.legco.gov.hk/research-publications/english/2022issh26-conservation-of-country-parks-in-hong-kong-20221025-e.pdf</a></p>
+        <p>Lo, H.-y. (2025, November 15). Hikers flock to Hong Kong's "Mount Eason" for Sunset Peak silver grass, album art. <em>South China Morning Post</em>. <a href="https://www.scmp.com/news/hong-kong/society/article/3332887/be-mindful-trail-runners-passing-hong-kongs-sunset-peak-hikers-told">https://www.scmp.com/news/hong-kong/society/article/3332887/be-mindful-trail-runners-passing-hong-kongs-sunset-peak-hikers-told</a></p>
+        <p>Now News. (2025, November 11). <span lang="zh-Hant-HK">大東山大批遊人賞芒草　漁護署派員維持秩序</span> [Crowds visit Sunset Peak for silver grass; AFCD sends staff to keep order]. <a href="https://news.now.com/home/local/player?newsId=626177">https://news.now.com/home/local/player?newsId=626177</a></p>
+        <p>OECD. (2015). <em>How's life? 2015: Measuring well-being</em>. OECD Publishing. <a href="https://doi.org/10.1787/how_life-2015-en">https://doi.org/10.1787/how_life-2015-en</a></p>
+        <p>Outdoor Industry Association. (2025). <em>2025 outdoor participation trends report</em>. <a href="https://oia.outdoorindustry.org/exec-summary-outdoor-participation-trends">https://oia.outdoorindustry.org/exec-summary-outdoor-participation-trends</a></p>
+        <p>Radtke, T., Apel, T., Schenkel, K., Keller, J., &amp; von Lindern, E. (2022). Digital detox: An effective solution in the smartphone era? A systematic literature review. <em>Mobile Media &amp; Communication, 10</em>(2), 190–215. <a href="https://doi.org/10.1177/20501579211028647">https://doi.org/10.1177/20501579211028647</a></p>
+        <p>Syvertsen, T., &amp; Enli, G. (2020). Digital detox: Media resistance and the promise of authenticity. <em>Convergence, 26</em>(5–6), 1269–1283. <a href="https://doi.org/10.1177/1354856519847325">https://doi.org/10.1177/1354856519847325</a></p>
+        <p>Torres, E. N. (2020). Online-to-offline interactions and online community life cycles: A longitudinal study of shared leisure activities. <em>Leisure Sciences, 42</em>(1), 32–50. <a href="https://doi.org/10.1080/01490400.2017.1392913">https://doi.org/10.1080/01490400.2017.1392913</a></p>
+        <p>Washington Trails Association. (2018). <em>Leave No Trace releases new social media guidelines</em>. <a href="https://www.wta.org/news/signpost/leave-no-trace-provides-new-social-media-guidelines">https://www.wta.org/news/signpost/leave-no-trace-provides-new-social-media-guidelines</a></p>
+      </div>
+    </div>
+  </section>
+</main>
+
+<footer class="wrap">
+  <div class="col"><p>GEI4006 E-portfolio · All photos and screenshots are my own</p></div>
+</footer>
+
+<script>
+(function () {
+  var root = document.documentElement;
+  var hero = document.querySelector('.hero');
+  var ticking = false;
+  function update() {
+    var max = document.documentElement.scrollHeight - window.innerHeight;
+    var p = max > 0 ? Math.min(1, Math.max(0, window.scrollY / max)) : 0;
+    root.style.setProperty('--p', p.toFixed(3));
+    root.classList.toggle('past-hero', window.scrollY > hero.offsetHeight - 120);
+    ticking = false;
+  }
+  window.addEventListener('scroll', function () {
+    if (!ticking) { ticking = true; requestAnimationFrame(update); }
+  }, { passive: true });
+  window.addEventListener('resize', update);
+  update();
+
+  if ('IntersectionObserver' in window) {
+    var io = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting) { e.target.classList.add('in'); io.unobserve(e.target); }
+      });
+    }, { rootMargin: '0px 0px -8% 0px' });
+    document.querySelectorAll('.reveal').forEach(function (el) { io.observe(el); });
+
+    var links = Array.prototype.slice.call(document.querySelectorAll('.stages a'));
+    var byId = {};
+    links.forEach(function (a) { byId[a.getAttribute('href').slice(1)] = a; });
+    var so = new IntersectionObserver(function (entries) {
+      entries.forEach(function (e) {
+        if (e.isIntersecting && byId[e.target.id]) {
+          links.forEach(function (a) { a.classList.remove('on'); });
+          byId[e.target.id].classList.add('on');
+        }
+      });
+    }, { rootMargin: '-45% 0px -50% 0px' });
+    document.querySelectorAll('main section[id]').forEach(function (s) { so.observe(s); });
+  } else {
+    document.querySelectorAll('.reveal').forEach(function (el) { el.classList.add('in'); });
+  }
+})();
+</script>
+</body>
+</html>
